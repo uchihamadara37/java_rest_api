@@ -1,12 +1,25 @@
 package com.andre.dojo.dataModel;
 
+import com.andre.dojo.helper.DBUtils;
+import com.andre.dojo.helper.Metadata;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Inventory {
     private int inventory_id;
     private int film_id;
     private int store_id;
     private Timestamp last_update;
+
+    public static Metadata<List<Inventory>> getAllInventory(){
+        String sql = "SELECT * FROM inventory;";
+        return new DBUtils<Inventory>().getList(sql, Inventory.class);
+    }
+    public static Metadata<Inventory> getOneInventory(int id){
+        String sql = "SELECT * FROM inventory WHERE inventory_id="+id+";";
+        return new DBUtils<Inventory>().getOne(sql, Inventory.class);
+    }
 
     public void setLast_update(Timestamp last_update) {
         this.last_update = last_update;

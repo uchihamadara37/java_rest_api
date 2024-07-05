@@ -1,18 +1,23 @@
 package com.andre.dojo.dataModel;
 
 import com.andre.dojo.helper.DBUtils;
+import com.andre.dojo.helper.Metadata;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.sql2o.ResultSetHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilmActor {
+    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private int film_id;
     private int actor_id;
     private Timestamp last_update;
-    private actorModel actor;
+    private List<actorModel> actor = new ArrayList<>();
     private Film film;
 
     public static String GetFilm_Actor_and_FilmActor(){
@@ -37,18 +42,20 @@ public class FilmActor {
         """;
         List<FilmActor> res = DBUtils.executeQueryJoin(
                 query,
+                FilmActor.class,
+                10
 
-        )
+        );
+        return gson.toJson(res);
     }
 
-    static class FA_Film_Actor_Handler implements ResultSetHandler<FilmActor>{
-        @Override
-        public FilmActor handle(ResultSet rs) throws SQLException {
-            if (rs.next()){
-                FilmActor filmActor = new FilmActor();
-
-            };
-        }
+    public static Metadata<List<FilmActor>> getAllFilmActor(){
+        String sql = "SELECT * FROM inventory;";
+        return new DBUtils<FilmActor>().getList(sql, FilmActor.class);
+    }
+    public static Metadata<FilmActor> getOneFilmActor(int id){
+        String sql = "SELECT * FROM inventory WHERE inventory_id="+id+";";
+        return new DBUtils<FilmActor>().getOne(sql, FilmActor.class);
     }
 
     public void setLast_update(Timestamp last_update) {
@@ -63,7 +70,7 @@ public class FilmActor {
         this.film_id = film_id;
     }
 
-    public void setActor(actorModel actor) {
+    public void setActor(List<actorModel> actor) {
         this.actor = actor;
     }
 
@@ -87,7 +94,7 @@ public class FilmActor {
         return actor_id;
     }
 
-    public actorModel getActor() {
+    public List<actorModel> getActor() {
         return actor;
     }
 }

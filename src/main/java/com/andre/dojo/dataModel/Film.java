@@ -2,10 +2,7 @@ package com.andre.dojo.dataModel;
 
 import com.andre.dojo.Enum.MPAARating;
 import com.andre.dojo.Interface.ResultSetHandler2;
-import com.andre.dojo.helper.DBUtils;
-import com.andre.dojo.helper.FilmInventoryHandler;
-import com.andre.dojo.helper.ParamJoin2Table;
-import com.andre.dojo.helper.TSVector;
+import com.andre.dojo.helper.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.sql2o.ResultSetHandler;
@@ -39,7 +36,8 @@ public class Film {
     public static String getFilmJoinInventory(){
         ParamJoin2Table param = new ParamJoin2Table("film f", "inventory i", "f.film_id", "i.film_id", 20);
 
-        ResultSetHandler<Film> handler = new FilmInventoryHandler();
+
+
 
         List<Film> res = DBUtils.executeQueryJoin(
 //                "SELECT * FROM :p1 JOIN :p2 ON :p3 = :p4 LIMIT :p5;",
@@ -50,21 +48,49 @@ public class Film {
                     f.description, 
                     f.release_year,
                     f.rental_duration,
-                    f.rental_rate,
+                    f.rental_rate
                     
-                    i.inventory_id,
-                    i.store_id,
-                    i.last_update
                     FROM film f LEFT JOIN inventory i ON f.film_id = i.film_id
                     WHERE f.film_id = :p1
                     LIMIT 10;
                 """,
-                handler,
+                Film.class,
 //                "film", "inventory", "film.film_id", "inventory.film_id", 10
                 100
         );
         return gson.toJson(res);
     }
+
+    public static Metadata<List<Film>> getListFilm(){
+        String sql = """
+                SELECT 
+                f.film_id, 
+                f.title, 
+                f.description, 
+                f.release_year,
+                f.rental_duration,
+                f.rental_rate
+                FROM film f LIMIT 100;
+                """;
+        return new DBUtils<Film>().getList(sql, Film.class);
+    }
+
+    public static Metadata<Film> getOneFilm(int id){
+        String sql = """
+                SELECT 
+                f.film_id, 
+                f.title, 
+                f.description, 
+                f.release_year,
+                f.rental_duration,
+                f.rental_rate
+                FROM film f WHERE film_id = """+id+"""
+                ; """;
+        return new DBUtils<Film>().getOne(sql, Film.class);
+    }
+
+
+
 
 
 
@@ -86,6 +112,10 @@ public class Film {
 
     public FilmCategory getFilm_category() {
         return film_category;
+    }
+
+    public void setInventory(List<Inventory> inventory) {
+        this.inventory = inventory;
     }
 
     public Language getLanguage() {

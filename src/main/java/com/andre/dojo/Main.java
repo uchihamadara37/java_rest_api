@@ -1,6 +1,7 @@
 package com.andre.dojo;
 
 import com.andre.dojo.Controller.ActorController;
+import com.andre.dojo.Controller.FilmActorController;
 import com.andre.dojo.Controller.FilmController;
 import com.andre.dojo.Controller.PaymentController;
 import io.javalin.Javalin;
@@ -24,7 +25,11 @@ public class Main {
 
                 .get("/payment", PaymentController.getAllPayments)
 
-                .get("/film", FilmController.getAllwithInventory)
+                .get("/film", FilmController.getAllFilms)
+                .get("/film/{id}", FilmController.getAllFilms)
+
+                .get("/FilmAndInventory", FilmController.getAllwithInventory)
+                .get("/filmActor", FilmController.GetFilmWithActor)
                 .start(7070);
     }
 }

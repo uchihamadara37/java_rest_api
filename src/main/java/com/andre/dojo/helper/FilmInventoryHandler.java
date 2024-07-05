@@ -59,13 +59,13 @@ public class FilmInventoryHandler implements ResultSetHandler<Film> {
 //                film.setFulltext(new TSVector(tsvectorObj.toString()));
 //            }
 
-            Inventory inventory = new Inventory();
-            inventory.setInventory_id(rs.getInt("inventory_id"));
+//            Inventory inventory = new Inventory();
+//            inventory.setInventory_id(rs.getInt("inventory_id"));
 //            inventory.setFilm_id(rs.getInt("film_id"));
-            inventory.setStore_id(rs.getInt("store_id"));
-            inventory.setLast_update(rs.getTimestamp("last_update"));
-
-            film.getInventory().add(inventory);
+//            inventory.setStore_id(rs.getInt("store_id"));
+//            inventory.setLast_update(rs.getTimestamp("last_update"));
+//
+//            film.getInventory().add(inventory);
             return film;
         }
         return null;

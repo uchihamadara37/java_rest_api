@@ -4,6 +4,8 @@ import com.andre.dojo.Interface.ResultSetHandler2;
 import com.andre.dojo.dataModel.Film;
 import com.andre.dojo.dataModel.actorModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.simpleflatmapper.sql2o.SfmResultSetHandlerFactoryBuilder;
 import org.sql2o.*;
 
 import java.sql.ResultSet;
@@ -12,32 +14,28 @@ import java.util.Map;
 
 import static com.andre.dojo.pgConnection.getSql2o;
 
-public class DBUtils {
-    static Gson gson = new Gson();
+public class DBUtils<T>{
+    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static Sql2o sql2o = getSql2o();
 
-    public static String getList(String query, Class<?> object){
+    public Metadata<List<T>> getList(String query, Class<T> object){
         try (Connection con = sql2o.open()) {
-            List<?> hasil = con.createQuery(query).executeAndFetch(object);
-            Metadata<List<?>> hasil2 = new Metadata<>("Berhasil", 200, hasil);
-            return gson.toJson(hasil2);
+            List<T> hasil = con.createQuery(query).executeAndFetch(object);
+            return new Metadata<>("Berhasil", 200, hasil);
         }
         catch (Sql2oException e){
-            Metadata<List<actorModel>> res = new Metadata<>("Tidak bisa menampilkan data. "+e.toString(), 404, null);
-            return gson.toJson(res);
+            return new Metadata<>("Tidak bisa menampilkan data. "+e.toString(), 404, null);
         }
     }
 
-    public static String getOne(String query, Class<?> object){
+    public Metadata<T> getOne(String query, Class<T> object){
         try (Connection con = sql2o.open()) {
-            List<?> hasil = con.createQuery(query).executeAndFetch(object);
-            Metadata<List<?>> hasil2 = new Metadata<>("Berhasil", 200, hasil);
-            return gson.toJson(hasil2);
+            List<T> hasil = con.createQuery(query).executeAndFetch(object);
+            return new Metadata<>("Berhasil", 200, hasil.getFirst());
         }
         catch (Sql2oException e){
-            Metadata<List<actorModel>> res = new Metadata<>("Tidak bisa menampilkan data. "+e.toString(), 404, null);
-            return gson.toJson(res);
+            return new Metadata<>("Tidak bisa menampilkan data. "+e.toString(), 404, null);
         }
     }
 
@@ -75,11 +73,12 @@ public class DBUtils {
         }
     }
 
-    public static <T> List<T> executeQueryJoin(String query, ResultSetHandler<T> handler, Object... params) {
+    public static <T> List<T> executeQueryJoin(String query, Class<T> handler, Object... params) {
         try (Connection con = sql2o.open()) {
             System.out.println(query);
             List<T> res = con.createQuery(query)
                 .withParams(params)
+//                    .setAutoDeriveColumnNames(true)
                     .executeAndFetch(handler);
             System.out.println(res);
             return res;

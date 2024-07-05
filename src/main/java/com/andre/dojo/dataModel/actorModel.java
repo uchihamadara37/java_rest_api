@@ -3,6 +3,7 @@ package com.andre.dojo.dataModel;
 import com.andre.dojo.helper.DBUtils;
 import com.andre.dojo.helper.Metadata;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -41,10 +42,10 @@ public class actorModel {
     }
 
     public static Sql2o sql2o = getSql2o();
-    public static Gson gson = new Gson();
+    public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static String getAllActors(){
-        return DBUtils.getList("SELECT * FROM actor", actorModel.class);
+        return gson.toJson(new DBUtils<actorModel>().getList("SELECT * FROM actor", actorModel.class));
     }
 
     public static String addActor(String first_name, String last_name){
@@ -68,12 +69,12 @@ public class actorModel {
 
     public static String getOneActor(int id){
         String query = "SELECT * FROM public.actor WHERE actor_id = "+id+";";
-        return DBUtils.getOne(query, actorModel.class);
+        return gson.toJson(new DBUtils<actorModel>().getOne(query, actorModel.class));
     }
 
     public static void resetSequence(){
         try (Connection con2 = sql2o.beginTransaction()){
-            Metadata<List<actorModel>> res =  gson.fromJson(DBUtils.getList("SELECT * FROM actor", actorModel.class), new TypeToken<Metadata<List<actorModel>>>(){}.getType());
+            Metadata<List<actorModel>> res =  new DBUtils<actorModel>().getList("SELECT * FROM actor", actorModel.class);
             List<actorModel> listActors = res.getData();
 
             List<actorModel> actorMax =  con2.createQuery("SELECT * FROM public.actor ORDER BY actor_id DESC LIMIT 1")
