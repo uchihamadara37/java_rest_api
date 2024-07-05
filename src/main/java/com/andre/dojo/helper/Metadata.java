@@ -1,4 +1,4 @@
-package com.andre.dojo.dataModel;
+package com.andre.dojo.helper;
 
 public class Metadata <T> {
     private int status;
@@ -20,6 +20,10 @@ public class Metadata <T> {
     }
 
     public T getData() {
-        return data;
+        if (data == null){
+            return null;
+        }else{
+            return data;
+        }
     }
 }

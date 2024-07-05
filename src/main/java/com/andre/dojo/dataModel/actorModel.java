@@ -1,6 +1,9 @@
 package com.andre.dojo.dataModel;
 
+import com.andre.dojo.helper.DBUtils;
+import com.andre.dojo.helper.Metadata;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
@@ -40,71 +43,47 @@ public class actorModel {
     public static Sql2o sql2o = getSql2o();
     public static Gson gson = new Gson();
 
-    public static Metadata<List<actorModel>> getAllActors(){
-        String sql = "SELECT actor_id, first_name, last_name, last_update FROM actor";
-
-        try (Connection con = sql2o.open()) {
-            List<actorModel> hasil = con.createQuery(sql).executeAndFetch(actorModel.class);
-            Metadata<List<actorModel>> hasil2 = new Metadata<>("Berhasil", 200, hasil);
-            return hasil2;
-        }
-        catch (Sql2oException e){
-            Metadata<List<actorModel>> res = new Metadata<>(e.toString(), 404, null);
-            return res;
-        }
+    public static String getAllActors(){
+        return DBUtils.getList("SELECT * FROM actor", actorModel.class);
     }
 
-    public static boolean addActor(String first_name, String last_name){
+    public static String addActor(String first_name, String last_name){
         Timestamp curr_timestamp = new Timestamp(System.currentTimeMillis());
-
-        String sql = "INSERT INTO public.actor (first_name, last_name, last_update) VALUES (:firstname, :lastname, :curr_timestamp);";
-
-        try (Connection con = sql2o.open()) {
-            con.createQuery(sql)
-                    .addParameter("firstname", first_name)
-                    .addParameter("lastname", last_name)
-                    .addParameter("curr_timestamp", curr_timestamp)
-                    .executeUpdate();
-            return true;
-        }catch (Sql2oException e){
-            System.out.println("gagal : "+e);
-            return false;
-        }
+        String sql = "INSERT INTO public.actor (first_name, last_name, last_update) VALUES ('"+first_name+"', '"+last_name+"', '"+curr_timestamp+"');";
+        return DBUtils.postInsert(sql);
     }
 
-    public static boolean deleteActor(int id){
-        String sql = "DELETE FROM public.actor WHERE actor_id=:id;";
+    public static String deleteActor(int id){
+        String sql = "DELETE FROM public.actor WHERE actor_id="+id+";";
+        String hasil = DBUtils.delete(sql);
+        resetSequence();
+        return hasil;
+    }
 
-        try (Connection con = sql2o.open()) {
-            con.createQuery(sql)
-                    .addParameter("id", id)
-                    .executeUpdate();
+    public static String UpdateActor(int id, String first_name, String last_name){
+        Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+        String query = "UPDATE public.actor SET first_name = "+first_name+", last_name="+last_name+", last_update = "+timeStamp+" WHERE actor_id = "+id+";";
+        return DBUtils.update(query);
+    }
 
-
-            return true;
-
-
-        }catch (Sql2oException e){
-            System.out.println("gagal"+e);
-            return false;
-        }
-
+    public static String getOneActor(int id){
+        String query = "SELECT * FROM public.actor WHERE actor_id = "+id+";";
+        return DBUtils.getOne(query, actorModel.class);
     }
 
     public static void resetSequence(){
         try (Connection con2 = sql2o.beginTransaction()){
-            Metadata<List<actorModel>> res =  getAllActors();
+            Metadata<List<actorModel>> res =  gson.fromJson(DBUtils.getList("SELECT * FROM actor", actorModel.class), new TypeToken<Metadata<List<actorModel>>>(){}.getType());
             List<actorModel> listActors = res.getData();
 
             List<actorModel> actorMax =  con2.createQuery("SELECT * FROM public.actor ORDER BY actor_id DESC LIMIT 1")
                     .executeAndFetch(actorModel.class);
 
-
             int id_sequence = 0;
             boolean ketemu = false;
             for(int i = 0; i < listActors.size(); i++){
 
-                if (listActors.get(i).actor_id != actorMax.getFirst().actor_id){
+//                if (listActors.get(i).actor_id != actorMax.getFirst().actor_id){
                     ketemu = false;
                     for (int j = 0; j < listActors.size(); j++) {
 
@@ -124,7 +103,7 @@ public class actorModel {
                     if (listActors.get(i).actor_id == 202){
                         System.out.println("Oalah .... apa benar? : "+ketemu);
                     }
-                }
+//                }
             }
             System.out.println("sequence : "+id_sequence);
             System.out.println("data size : "+listActors.size());
@@ -141,20 +120,5 @@ public class actorModel {
         }
     }
 
-    public static boolean UpdateActor(int id, String first_name, String last_name){
-        Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 
-        try (Connection con = sql2o.open()){
-            con.createQuery("UPDATE public.actor SET first_name = :firstName, last_name=:lastName, last_update = :ts WHERE actor_id = :id;")
-                    .addParameter("firstName", first_name)
-                    .addParameter("lastName", last_name)
-                    .addParameter("id", id)
-                    .addParameter("ts", timeStamp)
-                    .executeUpdate();
-            return true;
-        }catch (Sql2oException e){
-            System.out.println("gagal update : "+e);
-            return false;
-        }
-    }
 }

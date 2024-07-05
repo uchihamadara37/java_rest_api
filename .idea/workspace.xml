@@ -4,7 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="085e1bc7-edfd-422f-8fd9-fc0cab746ff7" name="Changes" comment="" />
+    <list default="true" id="085e1bc7-edfd-422f-8fd9-fc0cab746ff7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.fastRequest/config/fastRequestCurrentProjectEnvironment.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/Controller/FilmController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/Enum/MPAARating.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/Interface/ResultSetHandler2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/Film.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/FilmActor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/FilmCategory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/Inventory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/Language.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/helper/DBUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/helper/FilmInventoryHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/helper/Mapper2Table.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/helper/ParamJoin2Table.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/helper/TSVector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/helper/request.http" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/andre/dojo/Controller/ActorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/Controller/ActorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/andre/dojo/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/Metadata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/helper/Metadata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/Payment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/actorModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/andre/dojo/dataModel/actorModel.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,25 +49,34 @@
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="2iDR6AmgjeUzFRlspKX6XfstR5L" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/andre/Documents/wetherCode",
-    "onboarding.tips.debug.path": "/home/andre/Documents/programming-dojo/pertemuan_15/javaWithDatabase/src/main/java/com/andre/dojo/Main.java",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/andre/Documents/wetherCode&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/home/andre/Documents/programming-dojo/pertemuan_15/javaWithDatabase/src/main/java/com/andre/dojo/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.andre.dojo.helper" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -54,12 +88,15 @@
     </task>
     <servers />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/andre/dojo/Main.java</url>
-          <line>35</line>
+          <line>28</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

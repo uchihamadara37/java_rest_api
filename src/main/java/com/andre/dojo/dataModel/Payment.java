@@ -1,5 +1,6 @@
 package com.andre.dojo.dataModel;
 
+import com.andre.dojo.helper.Metadata;
 import com.google.gson.Gson;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;

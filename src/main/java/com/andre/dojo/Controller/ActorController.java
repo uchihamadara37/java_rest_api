@@ -8,8 +8,20 @@ import static com.andre.dojo.dataModel.actorModel.*;
 
 public class ActorController {
     private static Gson gson = new Gson();
+
     public static Handler getAll = ctx -> {
-        ctx.status(200).json(gson.toJson(getAllActors()));
+        ctx.status(200).json(getAllActors());
+    };
+
+    public static Handler getOne = ctx -> {
+        String idStr = ctx.pathParam("id");
+        try {
+            int id = Integer.parseInt(idStr);
+            String hasil = getOneActor(id);
+            ctx.json(hasil);
+        } catch (NumberFormatException e) {
+            ctx.status(400).json("ID harus berupa angka");
+        }
     };
 
     public static Handler insertOne = ctx -> {
@@ -23,31 +35,19 @@ public class ActorController {
             ctx.status(400).json("Both first_name and last_name are required");
             return;
         }
-        boolean hasil = addActor(firstName, lastName);
-        if (hasil){
-            ctx.status(200).json("Berhasil menambahkan");
-        }else{
-            ctx.status(400).json("Gagal menambahkan");
-        }
+        ctx.status(200).json(addActor(firstName, lastName));
     };
 
     public static Handler delete = ctx -> {
-        String idStr = ctx.queryParam("id");
-        if (idStr != null) {
-            try {
-                int id = Integer.parseInt(idStr);
+        String idStr = ctx.pathParam("id");
+        try {
+            int id = Integer.parseInt(idStr);
 
-                boolean hasil = deleteActor(id);
-                if (hasil)  ctx.json("User ID: " + id + " berhasil dihapus" );
-                else ctx.json("User ID: " + id + " gagal dihapus" );
-
-            } catch (NumberFormatException e) {
-                ctx.status(400).json("ID harus berupa angka");
-            }
-        } else {
-            ctx.status(400).json("ID tidak diberikan");
+            String hasil = deleteActor(id);
+            ctx.status(200).json(hasil);
+        } catch (NumberFormatException e) {
+            ctx.status(400).json("ID harus berupa angka");
         }
-        resetSequence();
     };
 
     public static Handler update = ctx -> {
@@ -64,15 +64,10 @@ public class ActorController {
 
         try {
             int id = Integer.parseInt(idStr);
-            boolean hasil = UpdateActor(id, firstName, lastName);
-            if (hasil){
-                ctx.status(200).json("Update data berhasil");
-            }else{
-                ctx.status(400).json("Update data gagal");
-            }
+            String hasil = UpdateActor(id, firstName, lastName);
+            ctx.status(200).json(hasil);
         }catch (NumberFormatException e){
             ctx.status(400).json("Error, id tidak valid");
-            return;
         }
     };
 }
