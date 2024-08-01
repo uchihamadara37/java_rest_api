@@ -39,7 +39,7 @@ public class Film {
 
 
 
-        List<Film> res = DBUtils.executeQueryJoin(
+        Metadata<List<Film>> res = DBUtils.executeQueryJoin(
 //                "SELECT * FROM :p1 JOIN :p2 ON :p3 = :p4 LIMIT :p5;",
                 """
                     SELECT 

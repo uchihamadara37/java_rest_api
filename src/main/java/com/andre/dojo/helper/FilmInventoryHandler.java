@@ -14,19 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 public class FilmInventoryHandler implements ResultSetHandler<Film> {
-
     @Override
     public Film handle(ResultSet rs) throws SQLException {
         if (rs.next()){
-//            f.film_id,
-//                    f.title,
-//                    f.description,
-//                    f.release_year,
-//                    f.rental_duration,
-//                    f.rental_rate,
-//
-//                    i.inventory_id,
-//                    i.store_id
             Film film = new Film();
             film.setFilm_id(rs.getInt("film_id"));
             film.setTitle(rs.getString("title"));

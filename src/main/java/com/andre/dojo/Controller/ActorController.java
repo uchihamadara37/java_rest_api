@@ -1,13 +1,20 @@
 package com.andre.dojo.Controller;
 
+import com.andre.dojo.dataModel.actorModel;
+import com.andre.dojo.helper.Metadata;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.javalin.http.Handler;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.andre.dojo.dataModel.actorModel.*;
 
 public class ActorController {
-    private static Gson gson = new Gson();
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static Handler getAll = ctx -> {
         ctx.status(200).json(getAllActors());
@@ -17,8 +24,8 @@ public class ActorController {
         String idStr = ctx.pathParam("id");
         try {
             int id = Integer.parseInt(idStr);
-            String hasil = getOneActor(id);
-            ctx.json(hasil);
+            Metadata<actorModel> hasil = getOneActor(id);
+            ctx.json(gson.toJson(hasil));
         } catch (NumberFormatException e) {
             ctx.status(400).json("ID harus berupa angka");
         }
@@ -43,7 +50,7 @@ public class ActorController {
         try {
             int id = Integer.parseInt(idStr);
 
-            String hasil = deleteActor(id);
+            Metadata<String> hasil = deleteActor(id);
             ctx.status(200).json(hasil);
         } catch (NumberFormatException e) {
             ctx.status(400).json("ID harus berupa angka");
@@ -64,10 +71,34 @@ public class ActorController {
 
         try {
             int id = Integer.parseInt(idStr);
-            String hasil = UpdateActor(id, firstName, lastName);
+            Metadata<String> hasil = UpdateActor(id, firstName, lastName);
             ctx.status(200).json(hasil);
         }catch (NumberFormatException e){
             ctx.status(400).json("Error, id tidak valid");
         }
+    };
+
+    public static Handler getListActorSearch = ctx -> {
+        Map<String, String> listParam = new HashMap<>();
+
+        listParam.put("firstName", ctx.queryParam("firstName"));
+        listParam.put("lastName", ctx.queryParam("lastName"));
+        String pageStr = ctx.pathParam("page");
+        int page = 0;
+        try{
+            page = Integer.parseInt(pageStr);
+        }catch (NumberFormatException e1){
+            try{
+                page = (int) Float.parseFloat(pageStr);
+            }catch (NumberFormatException e2){
+                page = 1;
+            }
+        }
+
+        Metadata<List<actorModel>> res = getAllWithSearch(listParam, page);
+
+        ctx.json(gson.toJson(res));
+
+
     };
 }

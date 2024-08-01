@@ -1,9 +1,6 @@
 package com.andre.dojo;
 
-import com.andre.dojo.Controller.ActorController;
-import com.andre.dojo.Controller.FilmActorController;
-import com.andre.dojo.Controller.FilmController;
-import com.andre.dojo.Controller.PaymentController;
+import com.andre.dojo.Controller.*;
 import io.javalin.Javalin;
 
 import java.sql.Timestamp;
@@ -22,6 +19,7 @@ public class Main {
                 .post("/addActor", ActorController.insertOne)
                 .delete("/deleteActor/{id}", ActorController.delete)
                 .put("/updateActor", ActorController.update)
+                .get("/actorSearch/{page}", ActorController.getListActorSearch)
 
                 .get("/payment", PaymentController.getAllPayments)
 
@@ -30,6 +28,17 @@ public class Main {
 
                 .get("/FilmAndInventory", FilmController.getAllwithInventory)
                 .get("/filmActor", FilmController.GetFilmWithActor)
+                .get("/InventoryJoinFilm", InventoryController.getInventoryJoinFilm)
+                .get("/FilmActorJoinActorJoinFilm", FilmActorController.getAll_Actor_and_Film)
+
+                .get("/getAllCities", CityController.getAllCity)
+                .get("/getCityById/{id}", CityController.getListCityJoinCountry)
+
+                .get("/getList", CityController.getListPageSearch)
+                .get("/getList/{page}", CityController.getListPageSearch)
+                .post("/insertCity", CityController.addCityJoinCountry)
+                .put("/updateCity/{id}", CityController.updateCityJoinCountry)
+
                 .start(7070);
     }
 }

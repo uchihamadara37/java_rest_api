@@ -11,6 +11,7 @@ import org.sql2o.Sql2oException;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import static com.andre.dojo.pgConnection.getSql2o;
 
@@ -48,28 +49,28 @@ public class actorModel {
         return gson.toJson(new DBUtils<actorModel>().getList("SELECT * FROM actor", actorModel.class));
     }
 
-    public static String addActor(String first_name, String last_name){
+    public static Metadata<String> addActor(String first_name, String last_name){
         Timestamp curr_timestamp = new Timestamp(System.currentTimeMillis());
         String sql = "INSERT INTO public.actor (first_name, last_name, last_update) VALUES ('"+first_name+"', '"+last_name+"', '"+curr_timestamp+"');";
         return DBUtils.postInsert(sql);
     }
 
-    public static String deleteActor(int id){
+    public static Metadata<String> deleteActor(int id){
         String sql = "DELETE FROM public.actor WHERE actor_id="+id+";";
-        String hasil = DBUtils.delete(sql);
+        Metadata<String> hasil = DBUtils.delete(sql);
         resetSequence();
         return hasil;
     }
 
-    public static String UpdateActor(int id, String first_name, String last_name){
+    public static Metadata<String> UpdateActor(int id, String first_name, String last_name){
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         String query = "UPDATE public.actor SET first_name = "+first_name+", last_name="+last_name+", last_update = "+timeStamp+" WHERE actor_id = "+id+";";
         return DBUtils.update(query);
     }
 
-    public static String getOneActor(int id){
+    public static Metadata<actorModel> getOneActor(int id){
         String query = "SELECT * FROM public.actor WHERE actor_id = "+id+";";
-        return gson.toJson(new DBUtils<actorModel>().getOne(query, actorModel.class));
+        return new DBUtils<actorModel>().getOne(query, actorModel.class);
     }
 
     public static void resetSequence(){
@@ -119,6 +120,24 @@ public class actorModel {
             System.out.println("gagal sql2 : "+e);
             return;
         }
+    }
+
+    public static Metadata<List<actorModel>> getAllWithSearch(Map<String, String> listParams, int page){
+        String sql = "SELECT * FROM actor WHERE TRUE ";
+        String where = "";
+
+        if (listParams.get("firstName") != null || listParams.get("firstName") != ""){
+            where += " AND first_name ILIKE '%"+listParams.get("firstName")+"%'";
+        }else if (listParams.get("lastName") != null || listParams.get("lastName") != ""){
+            where += " AND last_name ILIKE '%"+listParams.get("lastname")+"%'";
+        }
+
+
+        return new DBUtils<actorModel>().getList(
+                        sql+where+" ORDER BY actor_id LIMIT 20 OFFSET ("+page+"-1) * 20",
+                        actorModel.class
+                );
+
     }
 
 

@@ -17,7 +17,9 @@ public class FilmActor {
     private int film_id;
     private int actor_id;
     private Timestamp last_update;
-    private List<actorModel> actor = new ArrayList<>();
+    private List<actorModel> actors = new ArrayList<>();
+    private actorModel actor;
+
     private Film film;
 
     public static String GetFilm_Actor_and_FilmActor(){
@@ -40,7 +42,7 @@ public class FilmActor {
                 JOIN film f ON f.film_id = fa.film_id
                 LIMIT :p1
         """;
-        List<FilmActor> res = DBUtils.executeQueryJoin(
+        Metadata<List<FilmActor>> res = DBUtils.executeQueryJoin(
                 query,
                 FilmActor.class,
                 10
@@ -48,15 +50,35 @@ public class FilmActor {
         );
         return gson.toJson(res);
     }
+    //             _______     _____
+    //            /       |   /
+    //           /        |  /
+    //          /         | /
+    //         /          |/
+    //        /     /|    |
 
     public static Metadata<List<FilmActor>> getAllFilmActor(){
-        String sql = "SELECT * FROM inventory;";
+        String sql = "SELECT * FROM film_actor LIMIT 30;";
         return new DBUtils<FilmActor>().getList(sql, FilmActor.class);
     }
     public static Metadata<FilmActor> getOneFilmActor(int id){
-        String sql = "SELECT * FROM inventory WHERE inventory_id="+id+";";
+        String sql = "SELECT * FROM film_actor WHERE inventory_id="+id+";";
         return new DBUtils<FilmActor>().getOne(sql, FilmActor.class);
     }
+    public static Metadata<List<FilmActor>> getListJoin(){
+        String sql = """
+        SELECT 
+        fa.film_id,
+        fa.actor_id,
+        fa.last_update
+        
+        FROM film_actor fa
+        JOIN actor a ON fa.actor_id = a.actor_id
+        LIMIT :p1;
+        """;
+        return new DBUtils<FilmActor>().getList(sql, FilmActor.class, 20);
+    }
+
 
     public void setLast_update(Timestamp last_update) {
         this.last_update = last_update;
@@ -66,12 +88,20 @@ public class FilmActor {
         this.film = film;
     }
 
+    public void setActor(actorModel actor) {
+        this.actor = actor;
+    }
+
+    public actorModel getActor() {
+        return actor;
+    }
+
     public void setFilm_id(int film_id) {
         this.film_id = film_id;
     }
 
-    public void setActor(List<actorModel> actor) {
-        this.actor = actor;
+    public void setActors(List<actorModel> actor) {
+        this.actors = actor;
     }
 
     public void setActor_id(int actor_id) {
@@ -94,7 +124,7 @@ public class FilmActor {
         return actor_id;
     }
 
-    public List<actorModel> getActor() {
-        return actor;
+    public List<actorModel> getActors() {
+        return actors;
     }
 }

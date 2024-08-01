@@ -11,9 +11,12 @@ public class Inventory {
     private int film_id;
     private int store_id;
     private Timestamp last_update;
+    private Film film;
+
+
 
     public static Metadata<List<Inventory>> getAllInventory(){
-        String sql = "SELECT * FROM inventory;";
+        String sql = "SELECT * FROM inventory LIMIT 20;";
         return new DBUtils<Inventory>().getList(sql, Inventory.class);
     }
     public static Metadata<Inventory> getOneInventory(int id){
@@ -24,7 +27,13 @@ public class Inventory {
     public void setLast_update(Timestamp last_update) {
         this.last_update = last_update;
     }
+    public void setFilm(Film film) {
+        this.film = film;
+    }
 
+    public Film getFilm() {
+        return film;
+    }
     public void setFilm_id(int film_id) {
         this.film_id = film_id;
     }

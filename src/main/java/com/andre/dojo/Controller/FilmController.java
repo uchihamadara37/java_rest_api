@@ -42,7 +42,7 @@ public class FilmController {
             FilmActor fa = new FilmActor();
             for (FilmActor fas : filmActors){
                 actorModel am = new DBUtils<actorModel>().getOne("SELECT * FROM actor WHERE actor_id="+fas.getActor_id()+";", actorModel.class).getData();
-                fa.getActor().add(am);
+                fa.getActors().add(am);
             }
             f.setFilm_actor(fa);
         }
